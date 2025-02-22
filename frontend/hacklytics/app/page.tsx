@@ -1,5 +1,7 @@
-import VideoAnalysis from "@/components/VideoAnalysis";
-
 export default function Home() {
-  return <VideoAnalysis />;
+  return (
+    <div>
+      <p>Hello</p>
+    </div>
+  )
 }

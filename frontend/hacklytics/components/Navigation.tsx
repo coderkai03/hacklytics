@@ -2,14 +2,14 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Home, PlusCircle, BarChart3 } from "lucide-react"
+import { Home, PlusCircle, BarChart3, Circle, Upload } from "lucide-react"
 
 export default function Navigation() {
   const pathname = usePathname()
 
   const navItems = [
     { href: "/", label: "Overview", icon: Home },
-    { href: "/create", label: "Create New", icon: PlusCircle },
+    { href: "/upload", label: "Upload", icon: Upload},
     { href: "/analytics", label: "Analytics", icon: BarChart3 },
   ]
 
