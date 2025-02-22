@@ -1,6 +1,5 @@
-import PostAnalysisExample from "@/components/PostAnalysisExample"
+import VideoAnalysis from "@/components/VideoAnalysis";
 
 export default function Home() {
-  return <PostAnalysisExample />
+  return <VideoAnalysis />;
 }
-
