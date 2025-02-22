@@ -1,0 +1,14 @@
+{
+  "total_videos": 5,
+  "avg_duration": 42.493333333333325,
+  "engagement_metrics": {
+    "avg_retention_score": 53.10714840714841,
+    "avg_attention_density": 0.8407886557886558,
+    "avg_pacing_score": 62.182711732711724
+  },
+  "content_distribution": {
+    "avg_face_presence": 0.8407886557886558,
+    "avg_text_visibility": 72.58275058275058,
+    "avg_screen_recording": 71.77389277389277
+  }
+}

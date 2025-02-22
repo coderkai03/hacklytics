@@ -19,7 +19,6 @@ import librosa
 import json
 from typing import Dict, List, Any
 from sklearn.cluster import KMeans
-from scipy.signal.windows import hann
 
 def get_video_duration(video_path: str) -> float:
     """Extract video duration using OpenCV."""
@@ -30,7 +29,7 @@ def get_video_duration(video_path: str) -> float:
     cap.release()
     return duration
 
-def extract_frames(video_path: str, interval: float = 0.5) -> List[np.ndarray]:
+def extract_frames(video_path: str, interval: float = 1) -> List[np.ndarray]:
     """Extract frames from video at specified intervals."""
     frames = []
     cap = cv2.VideoCapture(video_path)
@@ -206,7 +205,7 @@ def interpret_mfccs(mfccs_mean: List[float]) -> Dict[str, str]:
     return features
 
 def extract_audio_features(video_path: str) -> Dict[str, Any]:
-    """Extract audio features using librosa."""
+    """Extract very basic audio features without using any advanced processing."""
     try:
         # Extract audio using moviepy
         video = VideoFileClip(video_path)
@@ -219,34 +218,79 @@ def extract_audio_features(video_path: str) -> Dict[str, Any]:
         # Load audio with librosa
         y, sr = librosa.load(temp_audio)
         
-        # Extract features
-        mfccs = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=13)
-        tempo, _ = librosa.beat.beat_track(y=y, sr=sr)
-        spectral_centroid = librosa.feature.spectral_centroid(y=y, sr=sr)
+        # Only use RMS energy and zero-crossing rate
+        rms = librosa.feature.rms(y=y)[0]
+        zcr = librosa.feature.zero_crossing_rate(y=y)[0]
+        
+        # Calculate basic statistics
+        rms_mean = float(np.mean(rms))
+        rms_std = float(np.std(rms))
+        zcr_mean = float(np.mean(zcr))
+        zcr_std = float(np.std(zcr))
+        
+        # Calculate volume levels
+        volume_percentiles = np.percentile(rms, [10, 50, 90])
+        dynamic_range = float((volume_percentiles[2] - volume_percentiles[0]) / volume_percentiles[1])
+        
+        # Quality metrics
+        quality_metrics = {
+            "volume_level": rms_mean,  # Overall loudness
+            "volume_consistency": float(1 - rms_std / rms_mean if rms_mean > 0 else 0),  # Higher means more consistent
+            "high_frequency_content": zcr_mean,  # Higher means more high-frequency content
+            "frequency_variation": float(zcr_std / zcr_mean if zcr_mean > 0 else 0)  # Higher means more varied frequency content
+        }
+        
+        # Quality scores based on empirical thresholds
+        quality_scores = {
+            "volume_quality": "good" if quality_metrics["volume_consistency"] > 0.7 else "variable",
+            "dynamic_range": "wide" if dynamic_range > 1.5 else "narrow",
+            "frequency_quality": "rich" if quality_metrics["high_frequency_content"] > 0.1 else "basic",
+            "overall_quality": "high" if (quality_metrics["volume_consistency"] > 0.7 and quality_metrics["high_frequency_content"] > 0.1) else "medium"
+        }
         
         # Clean up
         os.remove(temp_audio)
         video.close()
-
-        mfccs_mean = np.mean(mfccs, axis=1).tolist()
         
         return {
-            "audio_characteristics": interpret_mfccs(mfccs_mean),
-            "tempo_bpm": float(tempo),
-            "energy_level": "high" if float(np.mean(spectral_centroid)) > 2000 else "moderate",
-            "raw_features": {
-                "mfccs_mean": mfccs_mean,
-                "spectral_centroid_mean": float(np.mean(spectral_centroid))
+            "quality_metrics": quality_metrics,
+            "quality_scores": quality_scores,
+            "dynamic_analysis": {
+                "dynamic_range": dynamic_range,
+                "peak_volume": float(volume_percentiles[2]),
+                "median_volume": float(volume_percentiles[1]),
+                "noise_floor": float(volume_percentiles[0])
             }
         }
+        
     except Exception as e:
         print(f"Warning: Audio analysis failed - {str(e)}")
         return {
-            "audio_characteristics": None,
-            "tempo_bpm": None,
-            "energy_level": None,
-            "raw_features": None
+            "quality_metrics": None,
+            "quality_scores": None,
+            "dynamic_analysis": None
         }
+
+def analyze_view_potential(frame_analyses: List[Dict]) -> Dict[str, float]:
+    """Analyze view potential based on proven metrics"""
+    return {
+        'engagement_score': _calculate_engagement_score(frame_analyses),
+        'retention_probability': _estimate_retention(frame_analyses),
+        'viral_coefficient': _estimate_viral_potential(frame_analyses)
+    }
+
+def _calculate_engagement_score(analyses: List[Dict]) -> float:
+    attention_scores = [f['attention_score'] for f in analyses]
+    motion_energies = [f['motion_energy'] for f in analyses]
+    
+    # Higher scores for:
+    # - Consistent attention with peaks
+    # - Good motion pacing
+    # - Presence of CTAs
+    attention_consistency = np.std(attention_scores) / np.mean(attention_scores)
+    motion_pacing = np.std(motion_energies) / np.mean(motion_energies)
+    
+    return (100 - attention_consistency * 30) * (0.7 + motion_pacing * 0.3)
 
 def main():
     """Main function to process videos."""
