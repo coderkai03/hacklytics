@@ -8,6 +8,9 @@ from urllib.parse import urlparse, unquote
 
 # Create directory if it doesn't exist
 os.makedirs('scraped_tiktoks', exist_ok=True)
+# Create subdirectories for each category
+for category in ['non-viral', 'low-viral', 'viral', 'super-viral']:
+    os.makedirs(f'scraped_tiktoks/{category}', exist_ok=True)
 
 # Read and process the CSV
 df = pd.read_csv('data.csv')
@@ -35,7 +38,7 @@ def process_category(category, target_count=1500):
     
     ydl_opts = {
         'format': 'best',
-        'outtmpl': 'scraped_tiktoks/%(webpage_url)s.%(ext)s',
+        'outtmpl': f'scraped_tiktoks/{category}/%(webpage_url)s.%(ext)s',
         'ignoreerrors': True,
     }
 
