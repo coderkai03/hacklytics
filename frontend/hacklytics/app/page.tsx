@@ -1,6 +1,6 @@
-import Dashboard from "@/components/Dashboard"
+import PostAnalysisExample from "@/components/PostAnalysisExample"
 
 export default function Home() {
-  return <Dashboard />
+  return <PostAnalysisExample />
 }
 
