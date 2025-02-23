@@ -33,17 +33,19 @@ export default function DashboardPage() {
 
   return (
     <div className="max-w-4xl mx-auto py-8">
-      <h1 className="text-3xl font-bold mb-8">Welcome to Your Dashboard</h1>
-      <Card className="p-12">
+      <h1 className="text-4xl font-bold mb-8 bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent">
+        Welcome to Your Dashboard
+      </h1>
+      <Card className="p-12 bg-white shadow-lg rounded-xl border border-sky-100">
         <div className="text-center">
-          <h2 className="text-2xl font-semibold mb-6">
+          <h2 className="text-2xl font-semibold mb-6 text-gray-900">
             Upload Your First Video
           </h2>
           <div className="max-w-md mx-auto">
-            <label className="flex flex-col items-center justify-center w-full h-64 border-2 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100">
+            <label className="flex flex-col items-center justify-center w-full h-64 border-2 border-dashed rounded-xl cursor-pointer bg-sky-50 hover:bg-sky-100/50 border-sky-200 transition-all duration-300 ease-out group">
               <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                <Upload className="w-12 h-12 mb-4 text-gray-500" />
-                <p className="mb-2 text-sm text-gray-500">
+                <Upload className="w-12 h-12 mb-4 text-sky-500 group-hover:scale-110 transition-transform duration-300" />
+                <p className="mb-2 text-sm text-gray-600">
                   <span className="font-semibold">Click to upload</span> or drag
                   and drop
                 </p>
@@ -61,9 +63,11 @@ export default function DashboardPage() {
             </label>
           </div>
           {isUploading && (
-            <div className="mt-4">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
-              <p className="text-sm text-gray-600 mt-2">Uploading video...</p>
+            <div className="mt-6 flex flex-col items-center">
+              <div className="animate-spin rounded-full h-10 w-10 border-3 border-sky-500 border-t-transparent"></div>
+              <p className="text-sm text-gray-600 mt-3">
+                Processing your video...
+              </p>
             </div>
           )}
         </div>

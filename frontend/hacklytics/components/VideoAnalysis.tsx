@@ -5,33 +5,49 @@ import ContentRoadmap from "@/components/ContentRoadmap";
 
 export default function VideoAnalysis() {
   return (
-    <div className="max-w-7xl mx-auto space-y-6">
+    <div className="max-w-7xl mx-auto space-y-8">
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold">Video Analysis</h1>
-        <Button variant="outline" onClick={() => window.location.reload()}>
+        <h1 className="text-3xl font-bold text-gray-900">Video Analysis</h1>
+        <Button
+          variant="outline"
+          onClick={() => window.location.reload()}
+          className="hover:bg-sky-50 transition-colors duration-300"
+        >
           Upload New Video
         </Button>
       </div>
 
       {/* Video Preview and Quick Stats */}
-      <div className="grid md:grid-cols-3 gap-6">
-        <div className="md:col-span-2 space-y-4">
-          <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-semibold">Video Preview</h2>
-            <div className="space-x-2">
-              <Button variant="outline" size="sm">
-                <Share2 className="h-4 w-4 mr-2" />
-                Share
-              </Button>
-              <Button variant="outline" size="sm">
-                <Download className="h-4 w-4 mr-2" />
-                Download
-              </Button>
+      <div className="grid md:grid-cols-3 gap-8">
+        <div className="md:col-span-2 space-y-6">
+          <Card className="p-6 hover:shadow-lg transition-shadow duration-300 border border-sky-100">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-2xl font-semibold text-gray-900">
+                Video Preview
+              </h2>
+              <div className="space-x-3">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="hover:bg-sky-50 transition-colors duration-300"
+                >
+                  <Share2 className="h-4 w-4 mr-2" />
+                  Share
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="hover:bg-sky-50 transition-colors duration-300"
+                >
+                  <Download className="h-4 w-4 mr-2" />
+                  Download
+                </Button>
+              </div>
             </div>
-          </div>
-          <div className="aspect-video bg-muted rounded-lg">
-            {/* Video Player will go here */}
-          </div>
+            <div className="aspect-video bg-sky-50 rounded-lg overflow-hidden transition-transform duration-300 hover:scale-[1.01]">
+              {/* Video Player */}
+            </div>
+          </Card>
         </div>
 
         <Card className="p-6">
