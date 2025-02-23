@@ -86,7 +86,12 @@ export default function LandingPage() {
             potential, hook strength, and give you specific ways to make it
             better.
           </motion.p>
-          <div className="flex flex-col gap-4 items-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.6 }}
+            className="flex flex-col gap-4 items-center"
+          >
             <Link href="/dashboard">
               <RainbowButton className="text-white font-medium text-lg">
                 Try Now - It&apos;s Free
@@ -99,7 +104,7 @@ export default function LandingPage() {
               <span>•</span>
               <span>Instant analysis</span>
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
