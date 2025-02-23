@@ -3,31 +3,67 @@
 import { useState } from "react";
 import { Upload } from "lucide-react";
 import VideoAnalysis from "@/components/VideoAnalysis";
+import { uploadToS3 } from "@/utils/s3";
+import { toast } from "@/components/ui/use-toast";
+
+interface AnalysisData {
+  videoUrl: string;
+  predictedViews: number;
+  videoLength: number;
+  estimatedRevenue: number;
+}
 
 export default function DashboardPage() {
   const [videoUploaded, setVideoUploaded] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
+  const [analysisData, setAnalysisData] = useState<AnalysisData | null>(null);
 
-  const handleFileUpload = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (file) {
-      setIsUploading(true);
-      try {
-        // Simulate upload delay
-        await new Promise((resolve) => setTimeout(resolve, 2000));
-        setVideoUploaded(true);
-      } catch (error) {
-        console.error("Upload failed:", error);
-      } finally {
-        setIsUploading(false);
-      }
+    if (!file) return;
+
+    if (file.size > 800 * 1024 * 1024) { // 800MB limit
+      toast({
+        title: "Error",
+        description: "File size must be less than 800MB",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsUploading(true);
+    try {
+      // Upload to S3
+      const videoUrl = await uploadToS3(file);
+      
+      // Get video analysis
+      const response = await fetch('/api/analyze-video', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ videoUrl }),
+      });
+      
+      if (!response.ok) throw new Error('Analysis failed');
+      
+      const data = await response.json();
+      setAnalysisData({ videoUrl, ...data });
+      setVideoUploaded(true);
+    } catch (error) {
+      console.error("Upload failed:", error);
+      toast({
+        title: "Error",
+        description: "Failed to upload and analyze video",
+        variant: "destructive",
+      });
+    } finally {
+      setIsUploading(false);
     }
   };
 
-  if (videoUploaded) {
-    return <VideoAnalysis />;
+  if (videoUploaded && analysisData) {
+    return <VideoAnalysis initialData={analysisData} />;
   }
 
   return (
@@ -73,7 +109,7 @@ export default function DashboardPage() {
                 <div className="mt-10 flex flex-col items-center">
                   <div className="animate-spin rounded-full h-12 w-12 border-3 border-sky-500 border-t-transparent"></div>
                   <p className="text-base text-gray-600 mt-4">
-                    Analyzing your content...
+                    Uploading and analyzing your content...
                   </p>
                 </div>
               )}
