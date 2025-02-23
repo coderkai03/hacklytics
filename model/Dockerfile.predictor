@@ -1,0 +1,22 @@
+FROM public.ecr.aws/lambda/python:3.11
+
+LABEL maintainer="Your Name"
+LABEL description="View Prediction Lambda Function"
+
+# Install system dependencies
+RUN yum update -y && \
+    yum install -y \
+    libgomp \
+    gcc \
+    gcc-c++
+
+# Copy requirements first to leverage Docker cache
+COPY requirements.predictor.txt .
+RUN pip3 install -r requirements.predictor.txt --no-cache-dir
+
+# Copy function code and model
+COPY lambda_predictor.py ${LAMBDA_TASK_ROOT}/
+COPY stacking_view_predictor.pkl ${LAMBDA_TASK_ROOT}/
+
+# Set the CMD to your handler
+CMD [ "lambda_predictor.lambda_handler" ] 
