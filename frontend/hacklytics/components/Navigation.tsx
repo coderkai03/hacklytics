@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { BarChart3, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 
 export default function Navigation() {
   const pathname = usePathname();
@@ -24,9 +25,20 @@ export default function Navigation() {
               {/* Logo */}
               <Link
                 href="/"
-                className="flex items-center space-x-2 text-xl font-bold text-transparent bg-gradient-to-r from-sky-600 to-sky-500 bg-clip-text hover:opacity-80 transition-opacity -ml-2"
+                className="flex items-center space-x-3 text-xl font-bold group"
               >
-                CreatorAI
+                <div className="relative w-8 h-8 transform group-hover:rotate-12 transition-transform duration-300 bg-transparent">
+                  <Image
+                    src="/logo.svg"
+                    alt="CreatorAI Logo"
+                    width={32}
+                    height={32}
+                    className="w-8 h-8"
+                  />
+                </div>
+                <span className="bg-gradient-to-r from-sky-500 via-sky-400 to-sky-600 bg-clip-text text-transparent">
+                  CreatorAI
+                </span>
               </Link>
 
               {/* Navigation Items and CTA Buttons */}
