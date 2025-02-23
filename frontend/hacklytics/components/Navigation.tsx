@@ -2,16 +2,12 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BarChart3, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 
 export default function Navigation() {
   const pathname = usePathname();
-
-  const navItems = [
-    { href: "/dashboard", label: "Dashboard", icon: BarChart3 },
-  ];
 
   return (
     <div className="fixed top-0 left-0 right-0 z-50 backdrop-blur-sm mt-4">
@@ -29,7 +25,7 @@ export default function Navigation() {
               >
                 <div className="relative w-8 h-8 transform group-hover:rotate-12 transition-transform duration-300 bg-transparent">
                   <Image
-                    src="/logo.svg"
+                    src="/favicon.svg"
                     alt="CreatorAI Logo"
                     width={32}
                     height={32}
@@ -41,44 +37,21 @@ export default function Navigation() {
                 </span>
               </Link>
 
-              {/* Navigation Items and CTA Buttons */}
-              <div className="flex items-center space-x-6">
-                <div className="hidden sm:flex sm:space-x-2">
-                  {navItems.map((item) => (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      className={`
-                        flex items-center px-4 py-2 rounded-full text-sm font-medium transition-all duration-300
-                        ${
-                          pathname === item.href
-                            ? "bg-sky-100/80 text-sky-600 shadow-sm shadow-sky-100"
-                            : "text-gray-600 hover:bg-sky-50/80"
-                        }
-                      `}
-                    >
-                      <item.icon className="w-4 h-4 mr-2" />
-                      {item.label}
-                    </Link>
-                  ))}
+              {/* CTA Buttons */}
+              {pathname === "/" && (
+                <div className="hidden sm:flex items-center space-x-3">
+                  <Button
+                    variant="outline"
+                    className="px-4 h-9 border-sky-200 hover:bg-sky-50 text-gray-600 rounded-full"
+                  >
+                    Log in
+                  </Button>
+                  <Button className="px-4 h-9 bg-sky-500 hover:bg-sky-600 text-white group rounded-full shadow-lg shadow-sky-200/50 hover:shadow-sky-300/50 transition-all duration-300">
+                    Get Started
+                    <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                  </Button>
                 </div>
-
-                {/* CTA Buttons */}
-                {pathname === "/" && (
-                  <div className="hidden sm:flex items-center space-x-3">
-                    <Button
-                      variant="outline"
-                      className="px-4 h-9 border-sky-200 hover:bg-sky-50 text-gray-600 rounded-full"
-                    >
-                      Log in
-                    </Button>
-                    <Button className="px-4 h-9 bg-sky-500 hover:bg-sky-600 text-white group rounded-full shadow-lg shadow-sky-200/50 hover:shadow-sky-300/50 transition-all duration-300">
-                      Get Started
-                      <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                    </Button>
-                  </div>
-                )}
-              </div>
+              )}
             </div>
           </div>
         </nav>

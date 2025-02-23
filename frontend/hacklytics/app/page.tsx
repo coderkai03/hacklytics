@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import Link from "next/link";
 import { ArrowRight, Brain, Target, LineChart } from "lucide-react";
@@ -8,7 +8,6 @@ import { RainbowButton } from "@/components/magicui/rainbow-button";
 import { motion } from "framer-motion";
 
 export default function LandingPage() {
-  
   const features = [
     {
       icon: <Brain className="h-8 w-8 text-primary" />,
@@ -61,7 +60,7 @@ export default function LandingPage() {
             transition={{ duration: 0.5 }}
             className="inline-block mb-6 px-4 py-1.5 bg-sky-100 rounded-full text-sm font-medium text-sky-600"
           >
-            Predict Your Content's Viral Potential
+            Predict Your Content&apos;s Viral Potential
           </motion.div>
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
@@ -72,7 +71,10 @@ export default function LandingPage() {
             <span className="bg-gradient-to-b from-gray-900 via-gray-800 to-gray-700 bg-clip-text text-transparent">
               Will Your Video
             </span>
-            <span className="bg-gradient-to-r from-sky-500 via-sky-400 to-sky-500 bg-clip-text text-transparent"> Go Viral?</span>
+            <span className="bg-gradient-to-r from-sky-500 via-sky-400 to-sky-500 bg-clip-text text-transparent">
+              {" "}
+              Go Viral?
+            </span>
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -80,14 +82,13 @@ export default function LandingPage() {
             transition={{ duration: 0.5, delay: 0.4 }}
             className="text-xl text-gray-600 mb-12 max-w-3xl mx-auto"
           >
-            Upload your short-form video and our AI will analyze its viral potential, hook strength, and give you specific ways to make it better.
+            Upload your short-form video and our AI will analyze its viral
+            potential, hook strength, and give you specific ways to make it
+            better.
           </motion.p>
           <div className="flex flex-col gap-4 items-center">
             <Link href="/dashboard">
-              <RainbowButton
-                className="group relative inline-flex items-center overflow-hidden"
-                containerClassName="animate-shimmer bg-[linear-gradient(110deg,#000103,45%,#1e2631,55%,#000103)] bg-[length:200%_100%] text-lg"
-              >
+              <RainbowButton className="text-white font-medium text-lg">
                 Try Now - It&apos;s Free
                 <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </RainbowButton>
@@ -117,7 +118,8 @@ export default function LandingPage() {
               Know Before You Post
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Stop guessing what works. Get data-driven insights for your content.
+              Stop guessing what works. Get data-driven insights for your
+              content.
             </p>
           </motion.div>
           <div className="grid md:grid-cols-3 gap-8">

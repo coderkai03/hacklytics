@@ -41,11 +41,11 @@
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
-    --color-1: 0 100% 63%;
-    --color-2: 270 100% 63%;
-    --color-3: 210 100% 63%;
-    --color-4: 195 100% 63%;
-    --color-5: 90 100% 63%;
+    --color-1: 217 91% 60%; /* Blue */
+    --color-2: 215 95% 50%; /* Darker Blue */
+    --color-3: 199 89% 48%; /* Sky Blue */
+    --color-4: 190 85% 50%; /* Light Blue */
+    --color-5: 213 94% 68%; /* Bright Blue */
   }
   .dark {
     --background: 0 0% 3.9%;

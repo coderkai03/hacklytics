@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { Upload } from "lucide-react";
-import { Card } from "@/components/ui/card";
 import VideoAnalysis from "@/components/VideoAnalysis";
 
 export default function DashboardPage() {
@@ -40,7 +39,7 @@ export default function DashboardPage() {
       <div className="w-full max-w-3xl mx-auto px-4">
         <div className="text-center mb-12">
           <div className="inline-block mb-6 px-4 py-1.5 bg-sky-100 rounded-full text-sm font-medium text-sky-600">
-            Let's Create Magic ✨
+            Let&apos;s Create Magic ✨
           </div>
           <h1 className="text-5xl font-bold mb-6 bg-gradient-to-b from-gray-900 via-gray-800 to-gray-700 bg-clip-text text-transparent">
             Your Creative Journey Starts Here
