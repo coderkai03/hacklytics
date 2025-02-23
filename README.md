@@ -1,5 +1,7 @@
 # Will I Go Viral 🚀
 
+<img width="1607" alt="Screenshot 2025-02-23 at 10 41 57 AM" src="https://github.com/user-attachments/assets/1b4c112d-d152-44f2-99a8-bab1dc2d1e9a" />
+
 ## Inspiration 🎬
 Ever wondered why some videos blow up while others flop? We did too! A lot of creators struggle with cracking the virality code, so we built a tool to make that easier. Our mission? **Predict not just virality, but revenue potential** based on engagement trends. 🚀 By understanding how content performs, creators can make smarter decisions and maximize their earnings. 💰
 
