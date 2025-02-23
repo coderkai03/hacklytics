@@ -1,35 +1,50 @@
-import {  TrendingUp, TrendingDown, DollarSign, Users, Clock, Video, Volume2, BarChart } from "lucide-react";
+import {
+  TrendingUp,
+  TrendingDown,
+  DollarSign,
+  Users,
+  Clock,
+  Video,
+  Volume2,
+  BarChart,
+} from "lucide-react";
+import { VideoAnalysisResult } from "@/services/videoService";
 
-interface VideoMetrics {
-  videoUrl: string;
-  predictedViews: number;
-  videoLength: number;
-  estimatedRevenue: number;
-}
+// Remove unused interface
+// interface VideoMetrics {
+//   videoUrl: string;
+//   predictedViews: number;
+//   videoLength: number;
+//   estimatedRevenue: number;
+// }
 
 interface VideoAnalysisProps {
-  initialData?: VideoMetrics;
+  analysisResult: VideoAnalysisResult;
 }
 
 export default function VideoAnalysis({ analysisResult }: VideoAnalysisProps) {
   const formatNumber = (num: number) => new Intl.NumberFormat().format(num);
-  const formatCurrency = (num: number) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(num);
+  const formatCurrency = (num: number) =>
+    new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+    }).format(num);
 
   // Calculate financial metrics based on video length and predicted views
   const calculateFinancialMetrics = () => {
     const views = analysisResult.prediction.predicted_views;
     const rpm = analysisResult.features_used.duration >= 480 ? 7.5 : 3.5; // $7.50 RPM for 8+ min, $3.50 for shorter
     const estimatedRevenue = (views / 1000) * rpm;
-    
-    let revenuePotential: 'low' | 'medium' | 'high';
-    if (estimatedRevenue < 1000) revenuePotential = 'low';
-    else if (estimatedRevenue < 5000) revenuePotential = 'medium';
-    else revenuePotential = 'high';
+
+    let revenuePotential: "low" | "medium" | "high";
+    if (estimatedRevenue < 1000) revenuePotential = "low";
+    else if (estimatedRevenue < 5000) revenuePotential = "medium";
+    else revenuePotential = "high";
 
     return {
       rpm,
       estimatedRevenue,
-      revenuePotential
+      revenuePotential,
     };
   };
 
@@ -80,9 +95,7 @@ export default function VideoAnalysis({ analysisResult }: VideoAnalysisProps) {
           <p className="text-3xl font-bold text-sky-600">
             {formatCurrency(financialMetrics.rpm)}
           </p>
-          <p className="text-sm text-gray-500 mt-2">
-            Per 1,000 Views
-          </p>
+          <p className="text-sm text-gray-500 mt-2">Per 1,000 Views</p>
         </div>
 
         <div className="bg-white p-6 rounded-xl shadow-lg relative overflow-hidden">
@@ -97,7 +110,9 @@ export default function VideoAnalysis({ analysisResult }: VideoAnalysisProps) {
             {formatNumber(analysisResult.prediction.predicted_views)}
           </p>
           <p className="text-sm text-gray-500 mt-2">
-            Range: {formatNumber(analysisResult.prediction.confidence_range.low)} - {formatNumber(analysisResult.prediction.confidence_range.high)}
+            Range:{" "}
+            {formatNumber(analysisResult.prediction.confidence_range.low)} -{" "}
+            {formatNumber(analysisResult.prediction.confidence_range.high)}
           </p>
         </div>
       </div>
@@ -114,22 +129,31 @@ export default function VideoAnalysis({ analysisResult }: VideoAnalysisProps) {
               <Clock className="w-4 h-4" />
               Duration
             </h4>
-            <p className="text-lg font-semibold">{analysisResult.features_used.duration.toFixed(1)}s</p>
+            <p className="text-lg font-semibold">
+              {analysisResult.features_used.duration.toFixed(1)}s
+            </p>
           </div>
           <div className="p-4 bg-sky-50 rounded-lg">
             <h4 className="text-sm text-gray-500 flex items-center gap-1">
               <Users className="w-4 h-4" />
               Faces Detected
             </h4>
-            <p className="text-lg font-semibold">{analysisResult.features_used.total_faces}</p>
+            <p className="text-lg font-semibold">
+              {analysisResult.features_used.total_faces}
+            </p>
           </div>
           <div className="p-4 bg-sky-50 rounded-lg">
             <h4 className="text-sm text-gray-500">Text Coverage</h4>
-            <p className="text-lg font-semibold">{analysisResult.features_used.text_percentage}%</p>
+            <p className="text-lg font-semibold">
+              {analysisResult.features_used.text_percentage}%
+            </p>
           </div>
           <div className="p-4 bg-sky-50 rounded-lg">
             <h4 className="text-sm text-gray-500">Engagement Score</h4>
-            <p className="text-lg font-semibold">{(analysisResult.features_used.engagement_score * 100).toFixed(1)}%</p>
+            <p className="text-lg font-semibold">
+              {(analysisResult.features_used.engagement_score * 100).toFixed(1)}
+              %
+            </p>
           </div>
         </div>
       </div>
@@ -144,22 +168,46 @@ export default function VideoAnalysis({ analysisResult }: VideoAnalysisProps) {
           <div className="p-4 bg-sky-50 rounded-lg">
             <h4 className="text-sm text-gray-500">Quality Score</h4>
             <div className="flex items-center gap-2">
-              <p className="text-lg font-semibold">{(analysisResult.features_used.audio_quality_score * 100).toFixed(1)}%</p>
-              {getMetricStatus(analysisResult.features_used.audio_quality_score, 0.7)}
+              <p className="text-lg font-semibold">
+                {(
+                  analysisResult.features_used.audio_quality_score * 100
+                ).toFixed(1)}
+                %
+              </p>
+              {getMetricStatus(
+                analysisResult.features_used.audio_quality_score,
+                0.7
+              )}
             </div>
           </div>
           <div className="p-4 bg-sky-50 rounded-lg">
             <h4 className="text-sm text-gray-500">Dynamics Score</h4>
             <div className="flex items-center gap-2">
-              <p className="text-lg font-semibold">{(analysisResult.features_used.audio_dynamics_score * 100).toFixed(1)}%</p>
-              {getMetricStatus(analysisResult.features_used.audio_dynamics_score, 0.7)}
+              <p className="text-lg font-semibold">
+                {(
+                  analysisResult.features_used.audio_dynamics_score * 100
+                ).toFixed(1)}
+                %
+              </p>
+              {getMetricStatus(
+                analysisResult.features_used.audio_dynamics_score,
+                0.7
+              )}
             </div>
           </div>
           <div className="p-4 bg-sky-50 rounded-lg">
             <h4 className="text-sm text-gray-500">Clarity Score</h4>
             <div className="flex items-center gap-2">
-              <p className="text-lg font-semibold">{(analysisResult.features_used.audio_clarity_score * 100).toFixed(1)}%</p>
-              {getMetricStatus(analysisResult.features_used.audio_clarity_score, 0.7)}
+              <p className="text-lg font-semibold">
+                {(
+                  analysisResult.features_used.audio_clarity_score * 100
+                ).toFixed(1)}
+                %
+              </p>
+              {getMetricStatus(
+                analysisResult.features_used.audio_clarity_score,
+                0.7
+              )}
             </div>
           </div>
         </div>
