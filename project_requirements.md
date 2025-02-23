@@ -1,10 +1,10 @@
-# CreatorAI Analytics Engine - Project Requirements
+# ViralAI Analytics Engine - Project Requirements
 
 ## Project Overview
 
 ### Purpose
 
-CreatorAI Analytics Engine is an AI-powered platform designed to help content creators optimize their short-form video content and maximize revenue through data-driven insights and automated analysis. Our platform reduces content creation time by 60% while improving viewer retention by 40% and revenue potential by 2.5x.
+ViralAI Analytics Engine is an AI-powered platform designed to help content creators optimize their short-form video content and maximize revenue through data-driven insights and automated analysis. Our platform reduces content creation time by 60% while improving viewer retention by 40% and revenue potential by 2.5x.
 
 ### Target Audience
 

@@ -1,4 +1,4 @@
-# CreatorAI
+# ViralAI
 
 ### AI-powered insights to make your videos go viral
 

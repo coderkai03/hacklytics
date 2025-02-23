@@ -26,14 +26,14 @@ export default function Navigation() {
                 <div className="relative w-8 h-8 transform group-hover:rotate-12 transition-transform duration-300 bg-transparent">
                   <Image
                     src="/favicon.svg"
-                    alt="CreatorAI Logo"
+                    alt="ViralAI Logo"
                     width={32}
                     height={32}
                     className="w-8 h-8"
                   />
                 </div>
                 <span className="bg-gradient-to-r from-sky-500 via-sky-400 to-sky-600 bg-clip-text text-transparent">
-                  CreatorAI
+                  ViralAI
                 </span>
               </Link>
 

@@ -1,4 +1,4 @@
-# CreatorAI Analytics Engine - Design Specifications
+# ViralAI Analytics Engine - Design Specifications
 
 ## Design System
 

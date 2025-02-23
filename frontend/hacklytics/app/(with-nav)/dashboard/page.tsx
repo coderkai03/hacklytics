@@ -1,33 +1,57 @@
 "use client";
 
 import { useState } from "react";
-import { Upload } from "lucide-react";
+import { Upload, RefreshCcw } from "lucide-react";
 import VideoAnalysis from "@/components/VideoAnalysis";
+import { uploadVideoToS3, analyzeVideo, deleteVideoFromS3, VideoAnalysisResult } from "@/services/videoService";
+import { Button } from "@/components/ui/button";
 
 export default function DashboardPage() {
   const [videoUploaded, setVideoUploaded] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
+  const [analysisResult, setAnalysisResult] = useState<VideoAnalysisResult | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleFileUpload = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const file = event.target.files?.[0];
-    if (file) {
+  const handleFileUpload = async (file: File) => {
+    try {
       setIsUploading(true);
-      try {
-        // Simulate upload delay
-        await new Promise((resolve) => setTimeout(resolve, 2000));
-        setVideoUploaded(true);
-      } catch (error) {
-        console.error("Upload failed:", error);
-      } finally {
-        setIsUploading(false);
-      }
+      setError(null);
+      
+      // Analyze the video
+      const result = await analyzeVideo(file);
+      setAnalysisResult(result);
+      setVideoUploaded(true);
+      
+    } catch (error) {
+      console.error('Upload/analysis failed:', error);
+      setError('Failed to analyze video. Please try again.');
+    } finally {
+      setIsUploading(false);
     }
   };
 
-  if (videoUploaded) {
-    return <VideoAnalysis />;
+  const resetState = () => {
+    setVideoUploaded(false);
+    setAnalysisResult(null);
+    setError(null);
+  };
+
+  if (videoUploaded && analysisResult) {
+    return (
+      <div>
+                <div className="flex justify-center mt-2">
+          <Button
+            onClick={resetState}
+            className="bg-sky-500 hover:bg-sky-600 text-white px-6 py-2 rounded-lg flex items-center gap-2"
+          >
+            <RefreshCcw className="w-5 h-5" />
+            Upload Another File
+          </Button>
+        </div>
+        <VideoAnalysis analysisResult={analysisResult} />
+
+      </div>
+    );
   }
 
   return (
@@ -71,11 +95,26 @@ export default function DashboardPage() {
               </p>
               {isUploading && (
                 <div className="mt-10 flex flex-col items-center">
-                  <div className="animate-spin rounded-full h-12 w-12 border-3 border-sky-500 border-t-transparent"></div>
-                  <p className="text-base text-gray-600 mt-4">
-                    Analyzing your content...
-                  </p>
+                  <div className="animate-spin rounded-full h-12 w-12 border-4 border-sky-200 border-t-sky-500"></div>
+                  <div className="mt-4 space-y-2 text-center">
+                    <p className="text-base font-medium text-gray-800">
+                      Processing Your Video
+                    </p>
+                    <p className="text-sm text-gray-600">
+                      This might take a few moments...
+                    </p>
+                    <div className="flex items-center justify-center gap-1">
+                      <div className="w-2 h-2 rounded-full bg-sky-500 animate-bounce" style={{ animationDelay: '0s' }}></div>
+                      <div className="w-2 h-2 rounded-full bg-sky-500 animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                      <div className="w-2 h-2 rounded-full bg-sky-500 animate-bounce" style={{ animationDelay: '0.4s' }}></div>
+                    </div>
+                  </div>
                 </div>
+              )}
+              {error && (
+                <p className="mt-4 text-red-600 text-sm">
+                  {error}
+                </p>
               )}
             </div>
           </div>
@@ -83,7 +122,12 @@ export default function DashboardPage() {
             type="file"
             className="hidden"
             accept="video/*"
-            onChange={handleFileUpload}
+            onChange={(event) => {
+              if (event.target.files) {
+                const file = event.target.files[0];
+                handleFileUpload(file);
+              }
+            }}
             disabled={isUploading}
           />
         </label>
