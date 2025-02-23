@@ -1,9 +1,26 @@
+'use client'
+
 import Link from "next/link";
 import { ArrowRight, Brain, Target, LineChart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { useScramble } from "use-scramble";
 
 export default function LandingPage() {
+
+  const { ref, replay } = useScramble({
+    text: "Figure out if your content will ",
+    speed: 0.6,
+    tick: 2,
+    scramble: 5,
+    step: 2,
+    seed: 3,
+    chance: 0.8,
+    overflow: false,
+    range: [65, 90],
+    overdrive: false,
+  });
+  
   const features = [
     {
       icon: <Brain className="h-8 w-8 text-primary" />,
@@ -53,16 +70,14 @@ export default function LandingPage() {
           <div className="inline-block mb-6 px-4 py-1.5 bg-sky-100 rounded-full text-sm font-medium text-sky-600">
             The Future of Content Creation
           </div>
-          <h1 className="text-7xl font-bold tracking-tight mb-8 bg-gradient-to-b from-gray-900 via-gray-800 to-gray-700 bg-clip-text text-transparent">
-            Create Better Content with{" "}
-            <span className="bg-gradient-to-r from-sky-500 to-sky-600 bg-clip-text text-transparent">
-              AI Analytics
+          <h1 className="text-7xl font-bold tracking-tight mb-8">
+            <span className="bg-gradient-to-b from-gray-900 via-gray-800 to-gray-700 bg-clip-text text-transparent">
+              <span ref={ref}>Figure out if your content will </span>
             </span>
+            <span className="text-sky-500">go viral</span>
           </h1>
           <p className="text-xl text-gray-600 mb-12 max-w-3xl mx-auto">
-            Transform your short-form videos with AI-powered analytics. Get
-            instant insights, optimize your hooks, and maximize engagement
-            across platforms.
+            Upload your short-form content and we'll analyze its hook strength, audience engagement, and viral potential.
           </p>
           <div className="flex flex-col gap-4 items-center">
             <Link href="/dashboard">
