@@ -114,5 +114,5 @@ def process_video(video_path):
         return None
 
 if __name__ == "__main__":
-    video_path = "test_1.mp4"
+    video_path = "/Users/sahil/Documents/hacklytics/model/test_2.mp4"
     process_video(video_path)

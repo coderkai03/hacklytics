@@ -4,9 +4,12 @@ import joblib
 import os
 import warnings
 from typing import Dict, Any
+import pandas as pd
 
 # Suppress joblib warnings about multiprocessing
 warnings.filterwarnings('ignore', category=UserWarning, module='joblib')
+
+
 
 # Load model at container startup
 MODEL_PATH = os.path.join(os.path.dirname(__file__), 'stacking_view_predictor.pkl')
@@ -109,14 +112,16 @@ def lambda_handler(event, context):
         feature_columns = [
             'duration', 'total_faces', 'text_frames', 'avg_faces_per_frame',
             'text_percentage', 'volume_level', 'volume_consistency',
+            'high_frequency_content', 'frequency_variation', 'dynamic_range',
             'audio_quality_score', 'audio_clarity_score', 'face_text_ratio',
             'content_density', 'median_volume'
         ]
         
-        feature_vector = np.array([[features[col] for col in feature_columns]])
+        # Convert to pandas DataFrame
+        feature_df = pd.DataFrame([{col: features[col] for col in feature_columns}])
         
         # Make prediction
-        log_prediction = model.predict(feature_vector)[0]
+        log_prediction = model.predict(feature_df)[0]
         prediction = np.expm1(log_prediction)  # Convert back from log scale
         
         # Format response

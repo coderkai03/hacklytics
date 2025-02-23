@@ -8,7 +8,9 @@ RUN yum update -y && \
     yum install -y \
     libgomp \
     gcc \
-    gcc-c++
+    gcc-c++ \
+    cmake \
+    make
 
 # Copy requirements first to leverage Docker cache
 COPY requirements.predictor.txt .
