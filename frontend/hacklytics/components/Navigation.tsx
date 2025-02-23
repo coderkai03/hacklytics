@@ -1,25 +1,25 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { Home, PlusCircle, BarChart3, Circle, Upload } from "lucide-react"
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { BarChart3 } from "lucide-react";
 
 export default function Navigation() {
-  const pathname = usePathname()
+  const pathname = usePathname();
 
   const navItems = [
-    { href: "/", label: "Overview", icon: Home },
-    { href: "/upload", label: "Upload", icon: Upload},
-    { href: "/analytics", label: "Analytics", icon: BarChart3 },
-  ]
+    { href: "/dashboard", label: "Dashboard", icon: BarChart3 },
+  ];
 
   return (
     <nav className="bg-white shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16">
+        <div className="flex h-16">
           <div className="flex">
             <div className="flex-shrink-0 flex items-center">
-              <span className="text-2xl font-bold text-primary">CreatorAI</span>
+              <Link href="/" className="text-2xl font-bold text-primary">
+                CreatorAI
+              </Link>
             </div>
             <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
               {navItems.map((item) => (
@@ -41,6 +41,5 @@ export default function Navigation() {
         </div>
       </div>
     </nav>
-  )
+  );
 }
-
