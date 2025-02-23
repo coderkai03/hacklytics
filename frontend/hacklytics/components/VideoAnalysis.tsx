@@ -1,14 +1,20 @@
 import { Share2, Download, Sparkles, TrendingUp, TrendingDown, DollarSign, Users, Clock, Video, Volume2, BarChart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import ContentRoadmap from "@/components/ContentRoadmap";
-import { VideoAnalysisResult } from "@/services/videoService";
+import { useState, useEffect } from "react";
 
-interface VideoAnalysisProps {
-  analysisResult: VideoAnalysisResult;
+interface VideoMetrics {
+  videoUrl: string;
+  predictedViews: number;
+  videoLength: number;
+  estimatedRevenue: number;
 }
 
-export default function VideoAnalysis({ analysisResult }: VideoAnalysisProps) {
+interface VideoAnalysisProps {
+  initialData?: VideoMetrics;
+}
+
+export default function VideoAnalysis({ analysisResult }: VideoAnalysisProps{ initialData }: VideoAnalysisProps) {
   const formatNumber = (num: number) => new Intl.NumberFormat().format(num);
   const formatCurrency = (num: number) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(num);
 
@@ -39,6 +45,28 @@ export default function VideoAnalysis({ analysisResult }: VideoAnalysisProps) {
   };
 
   const financialMetrics = calculateFinancialMetrics();
+
+  const [metrics, setMetrics] = useState<VideoMetrics | null>(initialData || null);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (!initialData) {
+      fetchVideoMetrics();
+    }
+  }, [initialData]);
+
+  const fetchVideoMetrics = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch('/api/analyze-video');
+      const data = await response.json();
+      setMetrics(data);
+    } catch (error) {
+      console.error('Failed to fetch metrics:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="max-w-5xl mx-auto p-6 space-y-8">
@@ -129,7 +157,6 @@ export default function VideoAnalysis({ analysisResult }: VideoAnalysisProps) {
             <p className="text-lg font-semibold">{(analysisResult.features_used.engagement_score * 100).toFixed(1)}%</p>
           </div>
         </div>
-      </div>
 
       {/* Audio Analysis */}
       <div className="bg-white p-6 rounded-xl shadow-lg">

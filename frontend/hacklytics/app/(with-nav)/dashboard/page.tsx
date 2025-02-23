@@ -3,6 +3,15 @@
 import { useState } from "react";
 import { Upload, RefreshCcw } from "lucide-react";
 import VideoAnalysis from "@/components/VideoAnalysis";
+import { uploadToS3 } from "@/utils/s3";
+import { toast } from "@/components/ui/use-toast";
+
+interface AnalysisData {
+  videoUrl: string;
+  predictedViews: number;
+  videoLength: number;
+  estimatedRevenue: number;
+}
 import { uploadVideoToS3, analyzeVideo, deleteVideoFromS3, VideoAnalysisResult } from "@/services/videoService";
 import { Button } from "@/components/ui/button";
 
@@ -11,6 +20,7 @@ export default function DashboardPage() {
   const [isUploading, setIsUploading] = useState(false);
   const [analysisResult, setAnalysisResult] = useState<VideoAnalysisResult | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [analysisData, setAnalysisData] = useState<AnalysisData | null>(null);
 
   const handleFileUpload = async (file: File) => {
     try {
