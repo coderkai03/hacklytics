@@ -43,32 +43,6 @@ export interface VideoAnalysisResult {
   };
 }
 
-export async function uploadVideoToS3(file: File): Promise<string> {
-  const fileExtension = file.name.split('.').pop();
-  const fileName = `${uuidv4()}.${fileExtension}`;
-
-  const upload = new Upload({
-    client: s3Client,
-    params: {
-      Bucket: BUCKET_NAME,
-      Key: fileName,
-      Body: file,
-      ContentType: file.type,
-    },
-  });
-
-  await upload.done();
-  return `https://${BUCKET_NAME}.s3.amazonaws.com/${fileName}`;
-}
-
-export async function deleteVideoFromS3(videoUrl: string) {
-  const key = videoUrl.split('/').pop()!;
-  await s3Client.send({
-    Command: 'DeleteObject',
-    Bucket: BUCKET_NAME,
-    Key: key,
-  });
-}
 
 export async function analyzeVideo(file: File): Promise<VideoAnalysisResult> {
   try {

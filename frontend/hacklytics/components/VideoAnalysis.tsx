@@ -1,7 +1,4 @@
-import { Share2, Download, Sparkles, TrendingUp, TrendingDown, DollarSign, Users, Clock, Video, Volume2, BarChart } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { useState, useEffect } from "react";
+import {  TrendingUp, TrendingDown, DollarSign, Users, Clock, Video, Volume2, BarChart } from "lucide-react";
 
 interface VideoMetrics {
   videoUrl: string;

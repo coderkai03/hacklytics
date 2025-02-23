@@ -15,6 +15,7 @@ function calculateRevenue(views: number, videoLength: number): number {
 export async function POST(request: Request) {
   try {
     const { videoUrl } = await request.json();
+    console.log(videoUrl);
     
     // Here you would typically:
     // 1. Get actual video length from the video file
