@@ -60,12 +60,3 @@ Ever wondered why some videos blow up while others flop? We did too! A lot of cr
    npm install
    npm run dev
    ```
-
-## Contributors ✨
-- [Your Name](https://github.com/yourusername)  
-- [Contributor Name](https://github.com/contributor)
-
----
-
-💡 *Have ideas or want to contribute? Open an issue or submit a PR!*
-
